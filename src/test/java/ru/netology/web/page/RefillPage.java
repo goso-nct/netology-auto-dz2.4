@@ -22,9 +22,9 @@ public class RefillPage
 
     public RefillPage() {}
 
-    public DashboardPage transfer(int amount, int fromNum) {
+    public DashboardPage transfer(int amount, int fromCard) {
         amountField.setValue(String.valueOf(amount));
-        fromField.setValue(DataHelper.validCards[fromNum]);
+        fromField.setValue(DataHelper.validCards[fromCard]);
         transferButton.click();
         return page(DashboardPage.class);
     }

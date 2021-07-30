@@ -20,14 +20,14 @@ public class DashboardPage {
     public DashboardPage() {
     }
 
-    public int getBalance(int nom) {
-        var text = cards.get(nom).text();
+    public int getBalance(int nomCard) {
+        var text = cards.get(nomCard).text();
         var balance = Integer.parseInt(Arrays.stream(text.split(" ")).skip(5).findFirst().orElse("0"));
         return balance;
     }
 
-    public RefillPage refillTo(int number) {
-        buttons.get(number).click();
+    public RefillPage refill(int toCard) {
+        buttons.get(toCard).click();
         return page(RefillPage.class);
     }
 

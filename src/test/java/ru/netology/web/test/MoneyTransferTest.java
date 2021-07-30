@@ -13,10 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class MoneyTransferTest
 {
-    LoginPage loginPage = open("http://localhost:9999", LoginPage.class);
-    DashboardPage dashboardPage;
     int beforeBalance0, beforeBalance1;
     int afterBalance0, afterBalance1;
+    DashboardPage dashboardPage;
+
+    LoginPage loginPage = open("http://localhost:9999", LoginPage.class);
 
     void report(String name, int b0, int b1, int a0, int a1) {
         System.out.println("\n" + name);
@@ -49,7 +50,7 @@ class MoneyTransferTest
         gotoDashboard();
         getBeforeBalances();
 
-        var refillPage = dashboardPage.refillTo(0);
+        var refillPage = dashboardPage.refill(0);
         var amount = 500;
         dashboardPage = refillPage.transfer(amount,1);
 
@@ -66,7 +67,7 @@ class MoneyTransferTest
         gotoDashboard();
         getBeforeBalances();
 
-        var refillPage = dashboardPage.refillTo(1);
+        var refillPage = dashboardPage.refill(1);
         var amount = 500;
         dashboardPage = refillPage.transfer(amount,0);
 
@@ -83,12 +84,12 @@ class MoneyTransferTest
         gotoDashboard();
         getBeforeBalances();
 
-        var refillPage = dashboardPage.refillTo(0);
+        var refillPage = dashboardPage.refill(0);
         var amount = beforeBalance1 + 1_000;
         dashboardPage = refillPage.transfer(amount,1);
 
         getAfterBalances();
-        report("Checking for negative account",
+        report("Checking for negative account by transfer " + amount + " from 2 to 1",
                 beforeBalance0, beforeBalance1, afterBalance0, afterBalance1);
 
         assertTrue(afterBalance0 >= 0);
@@ -98,7 +99,7 @@ class MoneyTransferTest
     @Test
     void shouldDontTransferFromInvalidCard() {
         gotoDashboard();
-        var refillPage = dashboardPage.refillTo(0);
+        var refillPage = dashboardPage.refill(0);
         assertTrue(refillPage.transferFromInvalidCard());
     }
 
@@ -115,6 +116,11 @@ class MoneyTransferTest
 
         assertEquals(beforeBalance0, afterBalance0);
         assertEquals(beforeBalance1, afterBalance1);
+    }
+
+    @Test
+    void shouldBeErrorIfInvalidAuth() {
+        assertTrue(loginPage.invalidLogin());
     }
 
 }

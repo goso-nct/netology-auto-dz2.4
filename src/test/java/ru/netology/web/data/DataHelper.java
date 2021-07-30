@@ -20,6 +20,10 @@ public class DataHelper
         return new AuthInfo("petya", "123qwerty");
     }
 
+    public static AuthInfo getInvalidAuthInfo() {
+        return new AuthInfo("mumu", "qwerty");
+    }
+
     @Value
     public static class VerificationCode {
         String code;
