@@ -3,5 +3,4 @@ AQA-19
 
 Задача №1 - Page Object's  
 
-[![Build status](https://ci.appveyor.com/api/projects/status/0=true)](https://ci.appveyor.com/project/goso-nct/netology-auto-dz2-4)
-
+[![Build status](https://ci.appveyor.com/api/projects/status/oi4ku2kfmlocye9b?svg=true)](https://ci.appveyor.com/project/goso-nct/netology-auto-dz2-4)
