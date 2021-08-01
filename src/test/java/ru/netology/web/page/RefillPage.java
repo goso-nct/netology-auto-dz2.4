@@ -29,8 +29,8 @@ public class RefillPage
         return page(DashboardPage.class);
     }
 
-    public boolean transferFromInvalidCard() {
-        amountField.setValue("1000");
+    public boolean transferFromInvalidCard(String card, int amount) {
+        amountField.setValue(Integer.toString(amount));
         fromField.setValue(DataHelper.invalidCard);
         transferButton.click();
         errorNotification.shouldBe(visible);

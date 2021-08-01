@@ -25,9 +25,9 @@ public class LoginPage
         return page(VerificationPage.class);
     }
 
-    public boolean invalidLogin() {
-        loginField.setValue(DataHelper.getInvalidAuthInfo().getLogin());
-        passwordField.setValue(DataHelper.getInvalidAuthInfo().getPassword());
+    public boolean invalidLogin(String login, String password) {
+        loginField.setValue(login);
+        passwordField.setValue(password);
         loginButton.click();
         errorNotification.shouldBe(visible);
         return errorNotification.isDisplayed();

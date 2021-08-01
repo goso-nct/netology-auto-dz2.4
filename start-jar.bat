@@ -1,1 +1,1 @@
-java -jar ./artifacts/app-ibank-build-for-testers.jar -P:profile=test
+java -jar ./artifacts/app-ibank-build-for-testers.jar

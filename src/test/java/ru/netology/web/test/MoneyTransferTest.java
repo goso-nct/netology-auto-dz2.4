@@ -19,12 +19,6 @@ class MoneyTransferTest
 
     LoginPage loginPage = open("http://localhost:9999", LoginPage.class);
 
-    void report(String name, int b0, int b1, int a0, int a1) {
-        System.out.println("\n" + name);
-        System.out.printf("Card %16s: %7d %7d %n", DataHelper.validCards[0], b0, a0);
-        System.out.printf("Card %16s: %7d %7d %n%n", DataHelper.validCards[1], b1, a1);
-    }
-
     void gotoDashboard() {
         var authInfo = DataHelper.getAuthInfo();
         var verificationPage = loginPage.validLogin(authInfo);
@@ -49,14 +43,10 @@ class MoneyTransferTest
     void shouldRefillFirstCard() {
         gotoDashboard();
         getBeforeBalances();
-
         var refillPage = dashboardPage.refill(0);
         var amount = 500;
         dashboardPage = refillPage.transfer(amount,1);
-
         getAfterBalances();
-        report("Transfer " + amount + " from 2 to 1",
-                beforeBalance0, beforeBalance1, afterBalance0, afterBalance1);
 
         assertEquals(beforeBalance0 + amount, afterBalance0);
         assertEquals(beforeBalance1 - amount, afterBalance1);
@@ -66,14 +56,10 @@ class MoneyTransferTest
     void shouldRefillSecondCard() {
         gotoDashboard();
         getBeforeBalances();
-
         var refillPage = dashboardPage.refill(1);
         var amount = 500;
         dashboardPage = refillPage.transfer(amount,0);
-
         getAfterBalances();
-        report("Transfer " + amount + " from 1 to 2",
-                beforeBalance0, beforeBalance1, afterBalance0, afterBalance1);
 
         assertEquals(beforeBalance0 - amount, afterBalance0);
         assertEquals(beforeBalance1 + amount, afterBalance1);
@@ -83,36 +69,28 @@ class MoneyTransferTest
     void z_dontShouldNegativeAccount() {
         gotoDashboard();
         getBeforeBalances();
-
         var refillPage = dashboardPage.refill(0);
         var amount = beforeBalance1 + 1_000;
         dashboardPage = refillPage.transfer(amount,1);
-
         getAfterBalances();
-        report("Checking for negative account by transfer " + amount + " from 2 to 1",
-                beforeBalance0, beforeBalance1, afterBalance0, afterBalance1);
 
-        assertTrue(afterBalance0 >= 0);
-        assertTrue(afterBalance1 >= 0);
+        assertEquals(beforeBalance0, afterBalance0);
+        assertEquals(beforeBalance1, afterBalance1);
     }
 
     @Test
     void shouldDontTransferFromInvalidCard() {
         gotoDashboard();
         var refillPage = dashboardPage.refill(0);
-        assertTrue(refillPage.transferFromInvalidCard());
+        assertTrue(refillPage.transferFromInvalidCard(DataHelper.invalidCard, 1000));
     }
 
     @Test
     void shouldReloadedMoneyBeSame() {
         gotoDashboard();
         getBeforeBalances();
-
         dashboardPage.reload();
-
         getAfterBalances();
-        report("Checking refresh, accounts be same",
-                beforeBalance0, beforeBalance1, afterBalance0, afterBalance1);
 
         assertEquals(beforeBalance0, afterBalance0);
         assertEquals(beforeBalance1, afterBalance1);
@@ -120,8 +98,10 @@ class MoneyTransferTest
 
     @Test
     void shouldBeErrorIfInvalidAuth() {
-        assertTrue(loginPage.invalidLogin());
+        assertTrue(loginPage.invalidLogin(
+                DataHelper.getInvalidAuthInfo().getLogin(),
+                DataHelper.getInvalidAuthInfo().getPassword()
+        ));
     }
 
 }
-
